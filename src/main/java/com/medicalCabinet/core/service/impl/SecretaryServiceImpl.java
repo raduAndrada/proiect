@@ -52,6 +52,7 @@ public class SecretaryServiceImpl implements SecretaryService {
     }
 
     @Override
+    @Transactional
     public MedicalHistory addMedicalHistory(MedicalHistory med, Long patientId) {
         return secretaryServiceRepo.addMedicalHistory(med,patientId);
     }
@@ -62,8 +63,14 @@ public class SecretaryServiceImpl implements SecretaryService {
     }
 
     @Override
+    @Transactional
     public MedicalHistoryList getMedicalHistoryForPatient(Long patientId) {
         return secretaryServiceRepo.getMedicalHistoryForPatient(patientId);
+    }
+
+    @Override
+    public MedicalHistoryList getMedicalHistoryForPatientByCNP(String CNP) {
+        return secretaryServiceRepo.getMedicalHistoryForPatientByCNP(CNP);
     }
 
     @Override
@@ -72,6 +79,7 @@ public class SecretaryServiceImpl implements SecretaryService {
     }
 
     @Override
+    @Transactional
     public Patient getPatientById(Long id) {
         return secretaryServiceRepo.getPatientById(id);
     }

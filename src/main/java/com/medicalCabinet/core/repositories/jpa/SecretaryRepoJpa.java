@@ -73,6 +73,17 @@ public class SecretaryRepoJpa implements SecretaryServiceRepo {
         };
         validator.isValidCNP("");
         sessionFactory.getCurrentSession().saveOrUpdate(newPatient);
+        User usr = new User();
+        usr.setPatient(true);
+        usr.setName(newPatient.getName());
+        usr.setEmail(newPatient.getEmail());
+        usr.setUsername(newPatient.getCNP());
+        usr.setPassword(newPatient.getName().replaceAll(" ",""));
+        usr.setAddress(newPatient.getAddress());
+        usr.setAdmin(false);
+        usr.setDoctor(false);
+        usr.setSecretary(false);
+        sessionFactory.getCurrentSession().saveOrUpdate(usr);
         return newPatient;
     }
 
@@ -104,6 +115,19 @@ public class SecretaryRepoJpa implements SecretaryServiceRepo {
        MedicalHistoryList medicalHistoryList = new MedicalHistoryList();
        medicalHistoryList.setMedicalHistories(list);
        return medicalHistoryList;
+    }
+
+    @Override
+    public MedicalHistoryList getMedicalHistoryForPatientByCNP(String CNP) {
+        Patient pat = getPatientByCNP(CNP);
+        MedicalHistoryList list = new MedicalHistoryList();
+        ArrayList<MedicalHistory> meds = new ArrayList<>();
+        for (MedicalHistory m : pat.getHistorySet())
+        {
+            meds.add(m);
+        }
+        list.setMedicalHistories(meds);
+        return list;
     }
 
     @Override

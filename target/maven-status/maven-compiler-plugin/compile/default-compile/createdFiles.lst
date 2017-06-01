@@ -1,0 +1,6 @@
+com\medicalCabinet\core\models\Notification.class
+com\medicalCabinet\rest\resource\asm\NotificationListResourceAsm.class
+com\medicalCabinet\rest\resource\NotificationResource.class
+com\medicalCabinet\core\service\util\NotificationList.class
+com\medicalCabinet\rest\resource\asm\NotificationResourceAsm.class
+com\medicalCabinet\rest\resource\NotificationListResource.class

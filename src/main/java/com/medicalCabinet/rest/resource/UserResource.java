@@ -17,6 +17,7 @@ public class UserResource extends ResourceSupport {
     private boolean admin;
     private boolean secretary;
     private boolean doctor;
+    private boolean patient;
     private String speciality;
 
 
@@ -100,6 +101,15 @@ public class UserResource extends ResourceSupport {
         this.speciality = speciality;
     }
 
+    public boolean isPatient() {
+
+        return patient;
+    }
+
+    public void setPatient(boolean patient) {
+        this.patient = patient;
+    }
+
     public User toUser()
     {
        User user = new User();
@@ -110,6 +120,7 @@ public class UserResource extends ResourceSupport {
        user.setName(name);
        user.setPassword(password);
        user.setSecretary(secretary);
+       user.setPatient(patient);
        user.setUsername(username);
        return user;
     }

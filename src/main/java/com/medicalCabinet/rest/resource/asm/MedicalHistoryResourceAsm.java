@@ -28,6 +28,7 @@ public class MedicalHistoryResourceAsm extends ResourceAssemblerSupport<MedicalH
         res.setPreviousDoctor(entity.getPreviousDoctor());
         res.setRecommendations(entity.getRecommendations());
         res.setTestResults(entity.getTestResults());
+        res.setFilename(entity.getFilename());
         res.setPatient(entity.getPatient().getId());
         Link self =linkTo(methodOn(DoctorPatientController.class).getMedicalHistory((entity.getId()))).withSelfRel();
 

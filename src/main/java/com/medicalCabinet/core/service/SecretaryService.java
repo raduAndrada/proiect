@@ -19,6 +19,7 @@ public interface SecretaryService {
     public MedicalHistory addMedicalHistory(MedicalHistory med, Long patientId);
     public MedicalHistory getMedicalHistoryById(Long id);
     public MedicalHistoryList getMedicalHistoryForPatient(Long patientId);
+    public MedicalHistoryList getMedicalHistoryForPatientByCNP(String CNP);
     public MedicalHistoryList getAllMedicalHistories();
     public Patient getPatientById(Long id);
     public Patient deletePatient(Long patientId);

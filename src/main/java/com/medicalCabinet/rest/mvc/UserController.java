@@ -1,6 +1,8 @@
 package com.medicalCabinet.rest.mvc;
 
+import com.medicalCabinet.core.models.Appointment;
 import com.medicalCabinet.core.models.Doctor;
+import com.medicalCabinet.core.models.Patient;
 import com.medicalCabinet.core.models.User;
 import com.medicalCabinet.core.service.AdminService;
 import com.medicalCabinet.core.service.util.UserList;
@@ -22,8 +24,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 
 
 /**
@@ -122,6 +126,22 @@ public class UserController {
         }
 
     }
+    @RequestMapping(value="/update/patient",method= RequestMethod.POST)
+    @PreAuthorize("hasAuthority('PATIENT')")
+    public ResponseEntity<UserResource> updatePatientUser( @RequestBody UserResource sentUser)
+    {
+
+        User user = service.updateUserByUsername(sentUser.getUsername() ,sentUser.toUser());
+        if (user != null) {
+            UserResource res = new UserResourceAsm().toResource(user);
+            return new ResponseEntity<UserResource>(res, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<UserResource>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+
 
     @RequestMapping(value="/valid" ,method= RequestMethod.GET)
     @PreAuthorize("permitAll")
@@ -136,14 +156,18 @@ public class UserController {
                 users.setUsers(new ArrayList<>());
                 users.getUsers().add(usr);
             }else{
-                users = new UserList();
-                users.setUsers(new ArrayList<>());
-                users.getUsers().add(usr);
+                return null;
             }
-        }
+            if(usr.isPatient())
+            {
+                Patient pat = service.findPatientByUsername(usr.getUsername());
 
-        UserListResource res = new UserListResourceAsm().toResource(users);
-        return new ResponseEntity<UserListResource> (res,HttpStatus.OK);
+            }
+            UserListResource res = new UserListResourceAsm().toResource(users);
+            return new ResponseEntity<UserListResource> (res,HttpStatus.OK);
+        }
+        else return new ResponseEntity<UserListResource>(HttpStatus.NOT_FOUND);
+
     }
 
 }

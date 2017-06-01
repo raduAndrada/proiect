@@ -1,6 +1,7 @@
 package com.medicalCabinet.core.service;
 
 import com.medicalCabinet.core.models.Doctor;
+import com.medicalCabinet.core.models.Patient;
 import com.medicalCabinet.core.models.User;
 import com.medicalCabinet.core.service.util.UserList;
 
@@ -15,6 +16,8 @@ public interface AdminService {
     public UserList getAllUsers();
     public Doctor createDoctor(Long userId, Doctor doctor);
     public User findUserByUsername(String username);
+    public User updateUserByUsername(String username, User newUser);
 
+    public Patient findPatientByUsername(String username);
 
 }

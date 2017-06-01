@@ -2,6 +2,7 @@ package com.medicalCabinet.core.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.medicalCabinet.core.models.Doctor;
+import com.medicalCabinet.core.models.Patient;
 import com.medicalCabinet.core.models.User;
 import com.medicalCabinet.core.repositories.AdminServiceRepo;
 import com.medicalCabinet.core.service.AdminService;
@@ -69,5 +70,15 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public User findUserByUsername(String username) {
         return adminServiceRepo.findUserByUsername(username);
+    }
+
+    @Override
+    public User updateUserByUsername(String username, User newUser) {
+        return adminServiceRepo.updateUserByUsername(username,newUser);
+    }
+
+    @Override
+    public Patient findPatientByUsername(String username) {
+        return adminServiceRepo.findPatientByUsername(username);
     }
 }

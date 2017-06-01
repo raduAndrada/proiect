@@ -28,6 +28,7 @@ public class UserResourceAsm extends ResourceAssemblerSupport<User,UserResource>
         res.setAdmin(entity.isAdmin());
         res.setSecretary(entity.isSecretary());
         res.setDoctor(entity.isDoctor());
+        res.setPatient(entity.isPatient());
         res.setEmail(entity.getEmail());
         res.setName(entity.getName());
         res.setUsername(entity.getUsername());

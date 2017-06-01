@@ -20,6 +20,8 @@ public class User {
     private boolean admin;
     private boolean secretary;
     private boolean doctor;
+    private boolean patient;
+
 
     private Set<Doctor> doctors = new HashSet<Doctor>();
 
@@ -105,6 +107,15 @@ public class User {
 
     public void setDoctor(boolean doctor) {
         this.doctor = doctor;
+    }
+
+    @Column(name="patient")
+    public boolean isPatient() {
+        return patient;
+    }
+
+    public void setPatient(boolean patient) {
+        this.patient = patient;
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

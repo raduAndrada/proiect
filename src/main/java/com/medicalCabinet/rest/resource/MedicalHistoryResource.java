@@ -14,6 +14,7 @@ public class MedicalHistoryResource extends ResourceSupport {
     private String previousDoctor;
     private Long patient;
     private  Long rid;
+    private String filename;
 
     public String getRecommendations() {
         return recommendations;
@@ -63,12 +64,22 @@ public class MedicalHistoryResource extends ResourceSupport {
         this.patient = patient;
     }
 
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public MedicalHistory toMedicalHistory(){
         MedicalHistory med = new MedicalHistory();
         med.setDiagnostic(diagnostic);
         med.setRecommendations(recommendations);
         med.setPreviousDoctor(previousDoctor);
         med.setTestResults(testResults);
+        med.setFilename(filename);
         return med;
     }
 }

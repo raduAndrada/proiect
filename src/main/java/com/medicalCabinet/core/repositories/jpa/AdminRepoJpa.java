@@ -1,7 +1,6 @@
 package com.medicalCabinet.core.repositories.jpa;
 
-import com.medicalCabinet.core.models.Doctor;
-import com.medicalCabinet.core.models.User;
+import com.medicalCabinet.core.models.*;
 import com.medicalCabinet.core.repositories.AdminServiceRepo;
 import com.medicalCabinet.core.service.util.UserList;
 import org.hibernate.SessionFactory;
@@ -9,7 +8,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -81,7 +84,43 @@ public class AdminRepoJpa implements AdminServiceRepo{
     public User findUserByUsername(String username) {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM User WHERE username = :username");
         query.setParameter("username", username);
-        if (query.list().size()> 0 )return (User) query.list().get(0);
+        if (query.list().size()> 0 )
+        {
+            User usr = (User) query.list().get(0);
+            return usr;
+        }
         else return null;
+    }
+
+    @Override
+    public Patient findPatientByUsername(String username) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Patient WHERE cnp = :username");
+        query.setParameter("username", username);
+        if (query.list().size()> 0 ){
+
+            Patient pat= (Patient) query.list().get(0);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date =  new Date(Calendar.getInstance().getTime().getTime());
+            System.out.println(dateFormat.format(date));
+            if(pat.getAppointments()!=null) {
+                for (Appointment a : pat.getAppointments()) {
+                    if (dateFormat.format(a.getDate()).equals(dateFormat.format(date))) {
+                        Notification note = new Notification();
+                        note.setUsername(username);
+                        dateFormat = new SimpleDateFormat("HH:mm:ss");
+                        note.setMessage("Reminder! Appointment at " + dateFormat.format(a.getDate()));
+                        sessionFactory.getCurrentSession().saveOrUpdate(note);
+                    }
+                }
+            }
+            return pat;
+        }
+        else return null;
+    }
+
+    @Override
+    public User updateUserByUsername(String username, User newUser) {
+        User us = findUserByUsername(username);
+        return updateUser(us.getId(),newUser);
     }
 }

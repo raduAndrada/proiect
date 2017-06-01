@@ -25,6 +25,7 @@ public class AccountUserDetails implements UserDetails{
         if (user.isAdmin()) authority = () -> {return "ADMIN";};
         if (user.isSecretary()) authority = () -> {return "SECRETARY";};
         if (user.isDoctor()) authority = () -> {return "DOCTOR";};
+        if (user.isPatient()) authority = () -> {return "PATIENT";};
         authorities.add(authority);
         return authorities;
     }

@@ -1,5 +1,7 @@
 package com.medicalCabinet.core.models;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
@@ -9,6 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name ="patient")
+@Transactional
 public class Patient {
 
     private String name;

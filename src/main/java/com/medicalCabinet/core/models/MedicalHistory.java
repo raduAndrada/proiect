@@ -1,5 +1,7 @@
 package com.medicalCabinet.core.models;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 
 /**
@@ -8,12 +10,14 @@ import javax.persistence.*;
 
 @Entity
 @Table(name ="medicalhistory")
+@Transactional
 public class MedicalHistory {
     private long id;
     private String recommendations;
     private String testResults;
     private String diagnostic;
     private String previousDoctor;
+    private String filename;
 
     private Patient patient;
 
@@ -62,6 +66,15 @@ public class MedicalHistory {
 
     public void setPreviousDoctor(String previousDoctor) {
         this.previousDoctor = previousDoctor;
+    }
+
+    @Column(name="filename")
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     @ManyToOne

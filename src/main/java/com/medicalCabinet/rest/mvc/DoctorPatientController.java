@@ -1,9 +1,6 @@
 package com.medicalCabinet.rest.mvc;
 
-import com.medicalCabinet.core.models.Appointment;
-import com.medicalCabinet.core.models.MedicalHistory;
-import com.medicalCabinet.core.models.Notification;
-import com.medicalCabinet.core.models.User;
+import com.medicalCabinet.core.models.*;
 import com.medicalCabinet.core.service.DoctorService;
 import com.medicalCabinet.core.service.SecretaryService;
 import com.medicalCabinet.core.service.util.AppointmentList;
@@ -19,12 +16,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 /**
  * Created by Andrada on 4/24/2017.
  */
 @Controller
 @RequestMapping("/rest/doctors-patients")
 @PreAuthorize("hasAuthority('SECRETARY')or hasAuthority('DOCTOR')")
+@Transactional
 public class DoctorPatientController {
 
     @Autowired
@@ -157,7 +157,18 @@ public class DoctorPatientController {
     @RequestMapping(value="/history",method= RequestMethod.POST)
     public ResponseEntity<MedicalHistoryResource> addMedicalHistory(@RequestBody MedicalHistoryResource sentMedicalHistory)
     {
-        MedicalHistory med = service.addMedicalHistory(sentMedicalHistory.toMedicalHistory(),sentMedicalHistory.getPatient());
+        MedicalHistoryList meds = service.getAllMedicalHistories();
+        long medId = 0;
+        for (MedicalHistory m: meds.getMedicalHistories()
+                ) {
+            if (m.getId() > medId) medId = m.getId();
+        }
+        medId++;
+        Patient pat = service.getPatientById(sentMedicalHistory.getPatient());
+        String file = pat.getName().replaceAll(" ","")+ medId + ".txt";
+        MedicalHistory m = sentMedicalHistory.toMedicalHistory();
+        m.setFilename(file);
+        MedicalHistory med = service.addMedicalHistory(m,sentMedicalHistory.getPatient());
         if( med !=null)
         {
             MedicalHistoryResource res = new MedicalHistoryResourceAsm().toResource(med);
@@ -197,6 +208,7 @@ public class DoctorPatientController {
         }
     }
 
+    @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
     @RequestMapping(value="/notification/delete",method= RequestMethod.POST)
     public ResponseEntity<NotificationResource> deleteNotification(@RequestBody NotificationResource sentNotification)
     {

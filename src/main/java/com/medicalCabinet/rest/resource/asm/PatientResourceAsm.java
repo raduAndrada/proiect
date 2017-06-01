@@ -24,6 +24,7 @@ public class PatientResourceAsm  extends ResourceAssemblerSupport<Patient,Patien
     @Override
     public PatientResource toResource(Patient entity) {
         PatientResource res = new PatientResource();
+
         res.setRid(entity.getId());
         res.setAddress(entity.getAddress());
         res.setCNP(entity.getCNP());
